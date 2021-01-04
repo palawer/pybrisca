@@ -1,5 +1,6 @@
 from round import Round
 from deck import Deck
+import copy
 import time
 
 
@@ -9,7 +10,6 @@ class Game():
         self.game_suit = None
         self.deck      = None
         self.round     = None
-        self.rounds    = []
     
     
     def add_player(self, player):
@@ -35,7 +35,7 @@ class Game():
         for idx in range(3):
             for player in self.players:
                 has_card = player.cards[idx]
-                if not has_card and len(self.deck.cards) > 0:
+                if not has_card:
                     card = self.deck.get_first_card()
                     player.add_card(card, idx)
     
@@ -61,25 +61,43 @@ class Game():
         self.deck = Deck()
         self.deck.shuffle_deck()
         self.game_suit = self.deck.get_first_card()
-        self.deck.add_card(self.game_suit)
+        self.deck.add_card(self.game_suit)#FIME: make a copy?
         self.first_deal()
+    
+    
+    def end_game(self):
+        res = []
+        for player in self.players:
+            res.append((player, player.get_score()))
         
-        print('Suit:', self.game_suit)
+        res.sort(key=lambda x: x[1], reverse=True)
+        
+        print('-'*80)
+        print('FINISH')
+        print('-'*80)
+        for player, score in res:
+            print(player.name, score)
     
     
     def start_game(self):
+        self.game_setup();
+        
+        round_counter = 1
         while self.count_players_cards():
+            #### new round
             self.round = Round(self.game_suit)
-            self.rounds.append(self.round)
             
             print('\n')
+            print('#'*80)
             print('-'*80)
-            print('ROUND:', len(self.rounds))
+            print('ROUND:', round_counter)
+            print('Suit:', self.game_suit)
             
             print('-'*80)
             for player in self.players:
                 print(player)
             
+            #### play cards
             for player in self.players:
                 card = player.get_random_card()
                 self.round.add_card(card)
@@ -88,6 +106,7 @@ class Game():
             print('Round cards:')
             print(self.round)
             
+            #### check winner
             winner_card = self.round.get_winner_card()
             winner_player = winner_card.get_card_owner()
             winner_player.save_winned_cards(self.round.cards)
@@ -100,18 +119,11 @@ class Game():
             for player in self.players:
                 print(player.name, player.get_score(), len(player.winned_cards))
             
+            #### sort and deal
             self.sort_players(winner_player)
             self.deal_hand()
             
             #time.sleep(1)
-    
-    def end_game(self):
-        print('-'*80)
+            round_counter += 1
         
-        res = []
-        for player in self.players:
-            res.append((player, player.get_score()))
-        
-        res.sort(key=lambda x: x[1], reverse=True)
-        
-        print(res)
+        self.end_game()
