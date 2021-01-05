@@ -10,7 +10,6 @@ class Round():
         self.cards.append(card)
     
     
-    # FIXME
     def get_winner_card(self):
         win_card = self.cards[0]
         

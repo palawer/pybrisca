@@ -1,7 +1,5 @@
 from round import Round
 from deck import Deck
-import copy
-import time
 
 
 class Game():
@@ -14,11 +12,6 @@ class Game():
     
     def add_player(self, player):
         self.players.append(player)
-    
-    
-    def add_players(self, *args):
-        for player in args:
-            self.add_player(player)
     
     
     def sort_players(self, first_player):
@@ -61,7 +54,7 @@ class Game():
         self.deck = Deck()
         self.deck.shuffle_deck()
         self.game_suit = self.deck.get_first_card()
-        self.deck.add_card(self.game_suit)#FIME: make a copy?
+        self.deck.add_card(self.game_suit)
         self.first_deal()
     
     
@@ -123,7 +116,6 @@ class Game():
             self.sort_players(winner_player)
             self.deal_hand()
             
-            #time.sleep(1)
             round_counter += 1
         
         self.end_game()
