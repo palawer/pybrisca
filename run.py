@@ -3,10 +3,10 @@ from game import Game
 from player import Player
 
 
-p1 = Player('P1')
-p2 = Player('P2')
-p3 = Player('P3')
-p4 = Player('P4')
+p1 = Player('P1', is_bot=False)
+p2 = Player('CPU1')
+p3 = Player('CPU2')
+p4 = Player('CPU3')
 
 game = Game()
 game.add_player(p1)

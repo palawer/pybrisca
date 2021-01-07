@@ -91,13 +91,15 @@ class Game():
                 print(player)
             
             #### play cards
+            print('-'*80)
+            print('Round cards:')
+            
             for player in self.players:
                 card = player.get_random_card()
                 self.round.add_card(card)
+                print(player.name, card)
             
-            print('-'*80)
-            print('Round cards:')
-            print(self.round)
+            
             
             #### check winner
             winner_card = self.round.get_winner_card()

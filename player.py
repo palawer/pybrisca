@@ -27,11 +27,15 @@ class Player():
     
     
     def get_random_card(self):
-        indices = []
-        for idx, card in enumerate(self.cards):
-            if card:
-                indices.append(idx)
-        r = random.choice(indices)
+        if not self.is_bot:
+            r = int(input("Select card [0, 1, 2]: "))
+        else:
+            indices = []
+            for idx, card in enumerate(self.cards):
+                if card:
+                    indices.append(idx)
+            r = random.choice(indices)
+        
         card = self.cards[r]
         self.cards[r] = None
         return card
